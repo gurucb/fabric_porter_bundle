@@ -1,0 +1,137 @@
+# Create workspace:
+# core.workspace CreateWorkspace --capacityId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --description familyworkspace --displayName familyworkspace --Token <Token> --correlationId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+# Update workspace:
+# core.workspace UpdateWorkspace --workspaceId 99a62d0d-43a9-45ee-a2a1-d22e9550d9a4  --displayName aradana --description newtry --Token <Token> --correlationId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+# Get Workspace:
+# core.workspace GetWorkspace --workspaceId a6760a47-009e-4498-bce6-58ae07215590 --Token <Token> --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+# List Workspace:
+# core.workspace ListWorkspace --Token <Token> --correlationId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+# Delete workspace:
+# core.workspace DeleteWorkspace --workspaceId 06138db5-cc5e-4832-b8f7-7adf5c3bf686 --Token <Token> --correlationId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+
+# Create Item:
+# core.Item CreateItem --workspaceId a6760a47-009e-4498-bce6-58ae07215590 --type Warehosue --definition "" --description "godplshelp123" --displayName "godplshelp123" --Token <Token> --correlationId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+# Update Item:
+# core.Item UpdateItem --workspaceId 2c6cbe88-9676-444a-a918-e6b414ba8857 --itemId 63eac793-a3c8-4780-af2b-d1142ab95990 --displayName Elysiannewhome --description elysiannewhome --Token TokenValue --correlationId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+# Get Item:
+# core.Item GetItem --workspaceId 7e71bbd3-e99d-4a3c-bb85-95af4c80f844 --itemId 2e70637a-e08a-4577-8dcc-0c499faa03ff --Token <Token> --correlationId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+# List Item:
+# core.Item ListItem --workspaceId 2c6cbe88-9676-444a-a918-e6b414ba8857  --Token <Token> --correlationId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+# Delete Item:
+# core.Item DeleteItem --workspaceId 41725b47-f859-4338-abd4-c47f404e5cf6 --itemId 0d1f1ea3-ffbd-46ae-9f91-31542a127dec --Token <Token> --correlationId 548a5d04-3759-47f9-bf4c-35340dee8cf2 --filePath "C:\Users\krajaganesh\Downloads\log.txt"
+ 
+
+# This is the configuration for Porter
+# You must define steps for each action, but the rest is optional
+# See https://getporter.org/bundle/manifest/file-format/ for a description of all the allowed fields in this document.
+# See https://getporter.org/author-bundles for documentation on how to configure your bundle.
+# Uncomment out the sections below to take full advantage of what Porter can do!
+#Fabric APIs:
+    #   https://learn.microsoft.com/en-us/rest/api/fabric/core/workspaces
+    #   https://learn.microsoft.com/en-us/rest/api/fabric/core/items
+# Optional indicator of the resource type of this file
+schemaType: Bundle
+
+# Version of the porter.yaml schema used by this file.
+schemaVersion: 1.0.1
+
+# Name of the bundle
+name: fabric_provisioning_bundle
+
+# Version of the bundle. Change this each time you modify a published bundle.
+version: 0.1.0
+
+# Description of the bundle and what it does.
+description: "An example Porter configuration"
+
+# Registry where the bundle is published to by default
+registry: "localhost:5000"
+
+# If you want to customize the Dockerfile in use, uncomment the line below and update the referenced file. 
+# See https://getporter.org/bundle/custom-dockerfile/
+dockerfile: template.Dockerfile
+parameters: 
+  - name: workspaceDisplayName # contoso_fabric_workspace
+    type: string
+    required: true 
+  - name: workspaceDescription # Contoso Fabric Workspace
+    type: string
+    default: "Sample Fabric Workspace"
+    required: false
+  - name: capacityId # 548a5d04-3759-47f9-bf4c-35340dee8cf2
+    type: string
+    required: true
+  - name: correlationId #548a5d04-3759-47f9-bf4c-35340dee8cf2
+    type: string
+    required: true
+  - name: itemDisplayName #Contoso Lakehouse
+    type: string
+    required: true
+  - name: itemDescription #Contoso Lakehouse
+    type: string
+    default: "Sample Fabric Item"
+    required: false
+  - name: itemType #Lakehoues
+    type: string
+    required: true
+  - name: workspaceId ## Only if Item is passed in Porter YAML with No Workspace
+    type: string
+    required: false
+outputs:
+  - name: workspace_id
+    type: string
+    sensitive: false
+    applyTo:
+      - install
+  - name: item_id
+    type: string
+    sensitive: false
+    applyTo:
+      - install
+credentials:
+  - name: Microsoft_Fabric_Token #Name to bind to in the credential set
+    type: string
+  - name: Microsoft_StatusDBConnectionString
+   type: string
+mixins:
+  - fabric
+install:
+  - fabric:
+      description: "Creating Workspace"
+      group: core.workspace
+      operation: CreateWorkspace
+      flags:
+        displayName: ${ bundle.parameters.workspaceDisplayName }
+        type: "Workspace"
+        Token: ${ bundle.credentials.Microsoft_Fabric_Token }
+        capacityId: ${ bundle.parameters.capacityId }
+        description: ${ bundle.parameters.workspaceDescription }
+        correlationId: ${ bundle.parameters.correlationId }
+        statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
+      outputs:
+          - name: "workspace_id"
+            jsonPath: "$.id"
+  - fabric:
+      description: "Creating fabric Item"
+      group: core.items
+      operation: CreateItem
+      flags:
+        displayName: ${ bundle.parameters.itemDisplayName }
+        type: ${ bundle.parameters.itemType }
+        Token: ${ bundle.credentials.Microsoft_Fabric_Token }
+        workspaceId: ${ bundle.outputs.workspace_id }
+        definition: "{}" 
+        description: ${ bundle.parameters.itemDescription }
+        correlationId: ${ bundle.parameters.correlationId }
+        statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
+      outputs:
+        - name: "item_id"
+          jsonPath: "$.id"
+# Not Supported
+upgrade:
+  - fabric: 
+      description: "Not Supported"
+# Not Supported
+uninstall:
+  - fabric: 
+      description: "Not Supported"

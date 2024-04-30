@@ -1,0 +1,82 @@
+# This is the configuration for Porter
+# You must define steps for each action, but the rest is optional
+# See https://getporter.org/bundle/manifest/file-format/ for a description of all the allowed fields in this document.
+# See https://getporter.org/author-bundles for documentation on how to configure your bundle.
+# Uncomment out the sections below to take full advantage of what Porter can do!
+#Fabric APIs:
+    #   https://learn.microsoft.com/en-us/rest/api/fabric/core/workspaces
+    #   https://learn.microsoft.com/en-us/rest/api/fabric/core/items
+# Optional indicator of the resource type of this file
+schemaType: Bundle
+# Version of the porter.yaml schema used by this file.
+schemaVersion: 1.0.1
+# Name of the bundle
+name: fabric_provisioning_bundle_with_no_params_37
+# Version of the bundle. Change this each time you modify a published bundle.
+version: 0.1.0
+# Description of the bundle and what it does.
+description: "An example Porter configuration"
+# Registry where the bundle is published to by default
+registry: "localhost:5000"
+# If you want to customize the Dockerfile in use, uncomment the line below and update the referenced file. 
+# See https://getporter.org/bundle/custom-dockerfile/
+dockerfile: template.Dockerfile
+
+outputs:
+  - name: workspace_id
+    type: string
+    sensitive: false
+    applyTo:
+      - install
+  - name: item_id
+    type: string
+    sensitive: false
+    applyTo:
+      - install
+# credentials:
+#   - name: Microsoft_StatusDBConnectionString
+#     type: string
+#     default: ""
+#     isRequired: false
+mixins:
+  - fabric
+install:
+  - fabric:
+      description: "Creating Workspace"
+      group: core.workspace
+      operation: CreateWorkspace
+      flags:
+        displayName: "unified_fabric_workspace_32"
+        type: "Workspace"
+        Token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkwxS2ZLRklfam5YYndXYzIyeFp4dzFzVUhIMCIsImtpZCI6IkwxS2ZLRklfam5YYndXYzIyeFp4dzFzVUhIMCJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3LyIsImlhdCI6MTcxNDQzNzM0NSwibmJmIjoxNzE0NDM3MzQ1LCJleHAiOjE3MTQ0NDE0ODksImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBZVFBRy84V0FBQUFEd25wUVpDVDdLRHlmNUIySXpWTXpWL0ZMNzU2YWtRbFh6OXkwVU5pVEdHbjhjQ09kajNSelRtOEltbFhkbVRNSVdDOHpQaDFRVTd1cjN6dE1IbGdqTmRjREMvQm9oZ0kxUXMwWTlJM01SMXFHR2V0dzh2czFtMEVRa1ZRTFEzclpFT1pqWE9hNVBtRTZjOGFmUU9UWTVveXBDcWpkd0Z1eEVJeDNBWjU5Q2t1YW1selZYRmQ3QkJaN0N4d1IvbWZYb2NUNG02SHJ3anZRdlNhKzVQNHVjNEs3T1VyLy9mcGRTQ3liVEw5U0NCaGlWQUFTK1I0VDV1WXNkV3FWRmZndVQxNGlyRmNVZU9rbndWS3h6Vklxek5qbXZVWGxxYWpFWVJkMTZ3VWUyUT0iLCJhbXIiOlsicnNhIiwibWZhIl0sImFwcGlkIjoiODcxYzAxMGYtNWU2MS00ZmIxLTgzYWMtOTg2MTBhN2U5MTEwIiwiYXBwaWRhY3IiOiIwIiwiY29udHJvbHMiOlsiYXBwX3JlcyJdLCJjb250cm9sc19hdWRzIjpbIjAwMDAwMDA5LTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMCIsIjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMCJdLCJkZXZpY2VpZCI6Ijk0ZjUwNGVmLWMwOTQtNGUxNC1hYWQ5LTljMzMxYjQzNTlhOCIsImZhbWlseV9uYW1lIjoiQnVsdXN1IiwiZ2l2ZW5fbmFtZSI6Ikd1cnUgQ2hhcmFuIiwiaXBhZGRyIjoiMTIyLjE3MS45OS41NyIsIm5hbWUiOiJHdXJ1IENoYXJhbiBCdWx1c3UiLCJvaWQiOiJkMjhjMWNmZi02NmVjLTRmMWYtYjM2Zi02MTcyODNhYWZmN2UiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjE0Njc3MzA4NS05MDMzNjMyODUtNzE5MzQ0NzA3LTI0Mzc4OSIsInB1aWQiOiIxMDAzM0ZGRjgwMUJFRUM2IiwicmgiOiIwLkFSb0F2NGo1Y3ZHR3IwR1JxeTE4MEJIYlJ3a0FBQUFBQUFBQXdBQUFBQUFBQUFBYUFNay4iLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzaWduaW5fc3RhdGUiOlsiZHZjX21uZ2QiLCJkdmNfY21wIiwia21zaSJdLCJzdWIiOiJ1T0dmNlZaQ3lzb0dUWElrZmxUYWRFR0xIT0tLOXlqRFNjZVp4cS0wOXNzIiwidGlkIjoiNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3IiwidW5pcXVlX25hbWUiOiJndXJ1Y2JAbWljcm9zb2Z0LmNvbSIsInVwbiI6Imd1cnVjYkBtaWNyb3NvZnQuY29tIiwidXRpIjoiRkktNWJ6ZkNkVW10cVBaelBKc19BQSIsInZlciI6IjEuMCIsIndpZHMiOlsiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il0sInhtc19jYyI6WyJDUDEiXX0.b1OHNH4gjAry-_Emsp32XWOMKpPHYncG-5PcH07r_LkOludJnHxwwF2VIO_Z4EDE8o3lKuJyjqdfGb1TJSqaibP3FFUNaiRHdnQ9fYbT7dN0G2ZZskfbL5DHGm-TM92n8GZQTxnDVqyEF6A87lQl9ZnMjFvdu8vE76yvZgldMQjUatTbDiFHJ7JcK2510k_MaPUHk9kJ3u1WNoCBMntNXTzAMxig7s5hOXJnUaLfVQXpLtaZCC3Pn6d_G8Lx1fRSwuvcKl3EywIWukWt41rIwipj4y0RM1LTHv-J6-B7PMsSD9jvinTO35f9okqU-UGW1gmQMn_JgsnCqyVZJxZyew"
+        capacityId: "383e1cee-b196-4f22-aa48-9c67dd00883f"
+        description: "unified fabric workspace"
+        correlationId: "100"
+        statusDBConnectionString: "Myconnectionstring"
+      outputs:
+          - name: "workspace_id"
+            jsonPath: "$.id"
+  - fabric:
+      description: "Creating fabric Item"
+      group: core.items
+      operation: CreateItem
+      flags:
+        displayName: "unified fabric item"
+        type: "Lakehouse"
+        Token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkwxS2ZLRklfam5YYndXYzIyeFp4dzFzVUhIMCIsImtpZCI6IkwxS2ZLRklfam5YYndXYzIyeFp4dzFzVUhIMCJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3LyIsImlhdCI6MTcxNDQzNzM0NSwibmJmIjoxNzE0NDM3MzQ1LCJleHAiOjE3MTQ0NDE0ODksImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBZVFBRy84V0FBQUFEd25wUVpDVDdLRHlmNUIySXpWTXpWL0ZMNzU2YWtRbFh6OXkwVU5pVEdHbjhjQ09kajNSelRtOEltbFhkbVRNSVdDOHpQaDFRVTd1cjN6dE1IbGdqTmRjREMvQm9oZ0kxUXMwWTlJM01SMXFHR2V0dzh2czFtMEVRa1ZRTFEzclpFT1pqWE9hNVBtRTZjOGFmUU9UWTVveXBDcWpkd0Z1eEVJeDNBWjU5Q2t1YW1selZYRmQ3QkJaN0N4d1IvbWZYb2NUNG02SHJ3anZRdlNhKzVQNHVjNEs3T1VyLy9mcGRTQ3liVEw5U0NCaGlWQUFTK1I0VDV1WXNkV3FWRmZndVQxNGlyRmNVZU9rbndWS3h6Vklxek5qbXZVWGxxYWpFWVJkMTZ3VWUyUT0iLCJhbXIiOlsicnNhIiwibWZhIl0sImFwcGlkIjoiODcxYzAxMGYtNWU2MS00ZmIxLTgzYWMtOTg2MTBhN2U5MTEwIiwiYXBwaWRhY3IiOiIwIiwiY29udHJvbHMiOlsiYXBwX3JlcyJdLCJjb250cm9sc19hdWRzIjpbIjAwMDAwMDA5LTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMCIsIjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMCJdLCJkZXZpY2VpZCI6Ijk0ZjUwNGVmLWMwOTQtNGUxNC1hYWQ5LTljMzMxYjQzNTlhOCIsImZhbWlseV9uYW1lIjoiQnVsdXN1IiwiZ2l2ZW5fbmFtZSI6Ikd1cnUgQ2hhcmFuIiwiaXBhZGRyIjoiMTIyLjE3MS45OS41NyIsIm5hbWUiOiJHdXJ1IENoYXJhbiBCdWx1c3UiLCJvaWQiOiJkMjhjMWNmZi02NmVjLTRmMWYtYjM2Zi02MTcyODNhYWZmN2UiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjE0Njc3MzA4NS05MDMzNjMyODUtNzE5MzQ0NzA3LTI0Mzc4OSIsInB1aWQiOiIxMDAzM0ZGRjgwMUJFRUM2IiwicmgiOiIwLkFSb0F2NGo1Y3ZHR3IwR1JxeTE4MEJIYlJ3a0FBQUFBQUFBQXdBQUFBQUFBQUFBYUFNay4iLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzaWduaW5fc3RhdGUiOlsiZHZjX21uZ2QiLCJkdmNfY21wIiwia21zaSJdLCJzdWIiOiJ1T0dmNlZaQ3lzb0dUWElrZmxUYWRFR0xIT0tLOXlqRFNjZVp4cS0wOXNzIiwidGlkIjoiNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3IiwidW5pcXVlX25hbWUiOiJndXJ1Y2JAbWljcm9zb2Z0LmNvbSIsInVwbiI6Imd1cnVjYkBtaWNyb3NvZnQuY29tIiwidXRpIjoiRkktNWJ6ZkNkVW10cVBaelBKc19BQSIsInZlciI6IjEuMCIsIndpZHMiOlsiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il0sInhtc19jYyI6WyJDUDEiXX0.b1OHNH4gjAry-_Emsp32XWOMKpPHYncG-5PcH07r_LkOludJnHxwwF2VIO_Z4EDE8o3lKuJyjqdfGb1TJSqaibP3FFUNaiRHdnQ9fYbT7dN0G2ZZskfbL5DHGm-TM92n8GZQTxnDVqyEF6A87lQl9ZnMjFvdu8vE76yvZgldMQjUatTbDiFHJ7JcK2510k_MaPUHk9kJ3u1WNoCBMntNXTzAMxig7s5hOXJnUaLfVQXpLtaZCC3Pn6d_G8Lx1fRSwuvcKl3EywIWukWt41rIwipj4y0RM1LTHv-J6-B7PMsSD9jvinTO35f9okqU-UGW1gmQMn_JgsnCqyVZJxZyew"
+        workspaceId: ${ bundle.outputs.workspace_id }
+        definition: "{}" 
+        description: "Unified fabric item"
+        correlationId: "100"
+        statusDBConnectionString: "Myconnectionstring"
+      outputs:
+        - name: "item_id"
+          jsonPath: "$.id"
+# Not Supported
+upgrade:
+  - fabric: 
+      description: "Not Supported"
+# Not Supported
+uninstall:
+  - fabric: 
+      description: "Not Supported"
