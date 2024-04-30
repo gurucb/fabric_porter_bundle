@@ -23,6 +23,18 @@ registry: "localhost:5000"
 dockerfile: template.Dockerfile
 
 parameters: 
+  - name: subscriptionId
+    type: string
+    default: "default_subscription"
+    isRequired: false
+  - name: resourceGroup
+    default: "default_resourcegroup"
+    type: string
+    isRequired: false
+  - name: location
+    default: "default_location"
+    type: string
+    isRequired: false
   - name: workspaceDisplayName
     type: string
     isRequired: true
