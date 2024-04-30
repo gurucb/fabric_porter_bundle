@@ -65,11 +65,13 @@ parameters:
 outputs:
   - name: workspace_id
     type: string
+    default: "Object creation failed"
     sensitive: false
     applyTo:
       - install
   - name: item_id
     type: string
+    default: "Object creation failed"
     sensitive: false
     applyTo:
       - install
