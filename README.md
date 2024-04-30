@@ -24,9 +24,11 @@ Fabric Mixin uses credentials for OBO tokens and connection strings. These crede
   - name: Microsoft_StatusDBConnectionString
     env: Microsoft_StatusDBConnectionString
     applyTo:
-      - install```
+      - install 
+```
 
 Additionally parameters are used to capture and change values dynamically at runtime. 
+
 ```
 parameters: 
   - name: workspaceDisplayName
@@ -56,7 +58,7 @@ parameters:
     type: string
     default: ""
     isRequired: false
-    ```
+```
 Finally porter.yaml refers to fabric mixin and install action with arguments, flags and outputs.
 ```
 mixins:
@@ -142,6 +144,7 @@ OUTPUT: {
 }
 execution completed successfully!
 ```
+### Possible Issues:
 
 
 
