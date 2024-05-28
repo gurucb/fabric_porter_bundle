@@ -13,13 +13,13 @@
 
 # Porter targets linux/amd64 by default. Change the --platform flag to target a different platform
 FROM --platform=linux/amd64 debian:stable-slim
-WORKDIR /app
+WORKDIR /cnab/app
 
 # Copy the ClassLibraryProjects folder into the image
 # COPY  --link --chmod=0755 FabricCompositeSolution  /cnab/app
-RUN echo $PATH
-ENV PATH="$PATH:/cnab/app"
-RUN echo $PATH
+# RUN echo $PATH
+# ENV PATH="$PATH:/cnab/app"
+# RUN echo $PATH
 
 # PORTER_INIT
 

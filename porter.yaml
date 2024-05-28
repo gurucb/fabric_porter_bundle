@@ -11,13 +11,14 @@ schemaType: Bundle
 # Version of the porter.yaml schema used by this file.
 schemaVersion: 1.0.1
 # Name of the bundle
-name: fabric_provisioning_bundle_36
+name: fabric_provisioning_bundle_3639
 # Version of the bundle. Change this each time you modify a published bundle.
 version: 0.1.0
 # Description of the bundle and what it does.
 description: "An example Porter configuration"
 # Registry where the bundle is published to by default
-registry: "localhost:5000"
+# registry: "localhost:5000"
+registry: testcompositerpbundles.azurecr.io
 # If you want to customize the Dockerfile in use, uncomment the line below and update the referenced file. 
 # See https://getporter.org/bundle/custom-dockerfile/
 dockerfile: template.Dockerfile
