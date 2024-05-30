@@ -1,0 +1,194 @@
+# This is the configuration for Porter
+# You must define steps for each action, but the rest is optional
+# See https://getporter.org/bundle/manifest/file-format/ for a description of all the allowed fields in this document.
+# See https://getporter.org/author-bundles for documentation on how to configure your bundle.
+# Uncomment out the sections below to take full advantage of what Porter can do!
+#Fabric APIs:
+    #   https://learn.microsoft.com/en-us/rest/api/fabric/core/workspaces
+    #   https://learn.microsoft.com/en-us/rest/api/fabric/core/items
+# Optional indicator of the resource type of this file
+schemaType: Bundle
+# Version of the porter.yaml schema used by this file.
+schemaVersion: 1.0.1
+# Name of the bundle
+name: fabric_provisioning_bundle_110
+# Version of the bundle. Change this each time you modify a published bundle.
+version: 0.1.0
+# Description of the bundle and what it does.
+description: "An example Porter configuration"
+# Registry where the bundle is published to by default
+registry: "localhost:5000"
+# registry: testcompositerpbundles.azurecr.io
+# If you want to customize the Dockerfile in use, uncomment the line below and update the referenced file. 
+# See https://getporter.org/bundle/custom-dockerfile/
+dockerfile: template.Dockerfile
+
+parameters: 
+  - name: subscriptionId
+    type: string
+    default: "default_subscription"
+    isRequired: false
+  - name: resourceGroup
+    default: "default_resourcegroup"
+    type: string
+    isRequired: false
+  - name: location
+    default: "default_location"
+    type: string
+    isRequired: false
+  - name: capacityId
+    type: string
+    isRequired: true
+  - name: correlationId
+    type: string
+    isRequired: true
+
+    
+  - name: workspace1_DisplayName
+    type: string
+    isRequired: true
+  - name: workspace1_Description
+    type: string
+    default: "United Fabric Workspace"
+    isRequired: false
+
+    
+  - name: workspace2_DisplayName
+    type: string
+    isRequired: true
+  - name: workspace2_Description
+    type: string
+    default: "United Fabric Workspace"
+    isRequired: false
+
+
+  - name: item1_DisplayName
+    type: string
+    isRequired: true
+  - name: item1_Description
+    type: string
+    default: "United Fabric Item"
+    isRequired: false
+  - name: item1_Type
+    type: string
+    isRequired: true
+
+  - name: item2_DisplayName
+    type: string
+    isRequired: true
+  - name: item2_Description
+    type: string
+    default: "United Fabric Item"
+    isRequired: false
+  - name: item2_Type
+    type: string
+    isRequired: true
+
+outputs:
+  - name: workspace1_id
+    type: string
+    default: "Object creation failed"
+    sensitive: false
+    applyTo:
+      - install
+  - name: workspace2_id
+    type: string
+    default: "Object creation failed"
+    sensitive: false
+    applyTo:
+      - install
+  - name: item1_id
+    type: string
+    default: "Object creation failed"
+    sensitive: false
+    applyTo:
+      - install
+  - name: item2_id
+    type: string
+    default: "Object creation failed"
+    sensitive: false
+    applyTo:
+      - install    
+credentials:
+  - name: Microsoft_Fabric_Token
+    env: Microsoft_Fabric_Token
+    applyTo: 
+      - install
+  - name: Microsoft_StatusDBConnectionString
+    env: Microsoft_StatusDBConnectionString
+    applyTo:
+      - install
+mixins:
+  - fabric
+install:
+  - fabric:
+      description: "Creating Workspace"
+      group: core.workspace
+      operation: CreateWorkspace
+      flags:
+        displayName: ${ bundle.parameters.workspace1_DisplayName }
+        type: "Workspace"
+        Token: ${ bundle.credentials.Microsoft_Fabric_Token }
+        capacityId: ${ bundle.parameters.capacityId }
+        description: ${ bundle.parameters.workspace1_Description }
+        correlationId: ${ bundle.parameters.correlationId }
+        statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
+      outputs:
+          - name: "workspace1_id"
+            jsonPath: "$.id"
+  - fabric:
+      description: "Creating fabric Item"
+      group: core.items
+      operation: CreateItem
+      flags:
+        displayName: ${ bundle.parameters.item1_DisplayName }
+        type: "Lakehouse"
+        Token: ${ bundle.credentials.Microsoft_Fabric_Token }
+        workspaceId: ${ bundle.outputs.workspace1_id }
+        definition: "{}" 
+        description: ${ bundle.parameters.item1_Description }
+        correlationId: ${ bundle.parameters.correlationId }
+        statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
+      outputs:
+        - name: "item1_id"
+          jsonPath: "$.id"             
+  - fabric:
+      description: "Creating Workspace"
+      group: core.workspace
+      operation: CreateWorkspace
+      flags:
+        displayName: ${ bundle.parameters.workspace2_DisplayName }
+        type: "Workspace"
+        Token: ${ bundle.credentials.Microsoft_Fabric_Token }
+        capacityId: ${ bundle.parameters.capacityId }
+        description: ${ bundle.parameters.workspace2_Description }
+        correlationId: ${ bundle.parameters.correlationId }
+        statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
+      outputs:
+          - name: "workspace2_id"
+            jsonPath: "$.id"          
+         
+  - fabric:
+      description: "Creating fabric Item"
+      group: core.items
+      operation: CreateItem
+      flags:
+        displayName: ${ bundle.parameters.item2_DisplayName }
+        type: "Warehouse"
+        Token: ${ bundle.credentials.Microsoft_Fabric_Token }
+        workspaceId: ${ bundle.outputs.workspace2_id }
+        definition: "{}" 
+        description: ${ bundle.parameters.item2_Description }
+        correlationId: ${ bundle.parameters.correlationId }
+        statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
+      outputs:
+        - name: "item2_id"
+          jsonPath: "$.id"
+# Not Supported
+upgrade:
+  - fabric: 
+      description: "Not Supported"
+# Not Supported
+uninstall:
+  - fabric: 
+      description: "Not Supported"
