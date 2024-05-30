@@ -124,12 +124,12 @@ install:
       group: core.items
       operation: CreateItem
       flags:
-        displayName: ${ bundle.parameters.itemDisplayName }
+        displayName: ${ bundle.parameters.item1_DisplayName }
         type: "Lakehouse"
         Token: ${ bundle.credentials.Microsoft_Fabric_Token }
         workspaceId: ${ bundle.outputs.workspace_id }
         definition: "{}" 
-        description: ${ bundle.parameters.itemDescription }
+        description: ${ bundle.parameters.item1_Description }
         correlationId: ${ bundle.parameters.correlationId }
         statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
       outputs:
@@ -140,12 +140,12 @@ install:
       group: core.items
       operation: CreateItem
       flags:
-        displayName: ${ bundle.parameters.itemDisplayName }
+        displayName: ${ bundle.parameters.item2_DisplayName }
         type: "Warehouse"
         Token: ${ bundle.credentials.Microsoft_Fabric_Token }
         workspaceId: ${ bundle.outputs.workspace_id }
         definition: "{}" 
-        description: ${ bundle.parameters.itemDescription }
+        description: ${ bundle.parameters.item2_Description }
         correlationId: ${ bundle.parameters.correlationId }
         statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
       outputs:
