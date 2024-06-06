@@ -24,14 +24,18 @@ registry: "localhost:5000"
 dockerfile: template.Dockerfile
 
 parameters: 
+  - name: Microsoft_CorrelationID
+    env: Microsoft_CorrelationID
+    description: <ApplicableClouds>Azure,PowerPlatform</ApplicableClouds><Description>CorrelationID for the deployment</Description><DisplayName>Correlation ID</DisplayName><InternalSource>True</InternalSource>
   - name: subscriptionId
     type: string
     default: "default_subscription"
     isRequired: false
-  - name: resourceGroup
-    default: "default_resourcegroup"
+  - name: rgName
     type: string
-    isRequired: false
+    isRequired: true
+    description: <ApplicableClouds>Azure</ApplicableClouds><Description>The name of the resource group to create</Description><DisplayName>Resource Group</DisplayName>
+    default: "myTestRG2"
   - name: location
     default: "default_location"
     type: string
@@ -44,9 +48,6 @@ parameters:
     default: "United Fabric Workspace"
     isRequired: false
   - name: capacityId
-    type: string
-    isRequired: true
-  - name: correlationId
     type: string
     isRequired: true
   - name: itemDisplayName
@@ -98,7 +99,7 @@ install:
         Token: ${ bundle.credentials.Microsoft_Fabric_Token }
         capacityId: ${ bundle.parameters.capacityId }
         description: ${ bundle.parameters.workspaceDescription }
-        correlationId: ${ bundle.parameters.correlationId }
+        correlationId: ${ bundle.parameters.Microsoft_CorrelationID }
         statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
       outputs:
           - name: "workspace_id"
@@ -114,7 +115,7 @@ install:
         workspaceId: ${ bundle.outputs.workspace_id }
         definition: "{}" 
         description: ${ bundle.parameters.itemDescription }
-        correlationId: ${ bundle.parameters.correlationId }
+        correlationId: ${ bundle.parameters.Microsoft_CorrelationID }
         statusDBConnectionString: ${ bundle.credentials.Microsoft_StatusDBConnectionString }
       outputs:
         - name: "item_id"
